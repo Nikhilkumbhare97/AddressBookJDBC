@@ -1,6 +1,8 @@
+
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
+import java.sql.Date;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
@@ -39,5 +41,15 @@ public class AddressBookTest {
         Map<String, Integer> contactByCityOrStateMap = addressBookService.readContactByCityOrState();
         Assertions.assertEquals((int) contactByCityOrStateMap.get("Pune"), 2);
         Assertions.assertEquals((int) contactByCityOrStateMap.get("Maharashtra"), 4);
+    }
+
+    @Test
+    public void givenNewContact_WhenAdded_ShouldSyncWithDB() {
+        AddressBookService addressBookService = new AddressBookService();
+        addressBookService.readContactData();
+        addressBookService.addContactToDatabase("Rishi", "Badhe", "ShivajiNagar", "Shegaon", "Maharashtra", 425894,
+                "9875896425", "rishi@gmail.com", "Friend", Date.valueOf("2021-03-21"));
+        boolean result = addressBookService.checkContactInSyncWithDB("Rishi");
+        Assertions.assertTrue(result);
     }
 }

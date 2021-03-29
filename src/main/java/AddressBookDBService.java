@@ -1,3 +1,4 @@
+
 import java.sql.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -48,8 +49,9 @@ public class AddressBookDBService {
                 String phoneNumber = resultSet.getString("phoneNumber");
                 String email = resultSet.getString("email");
                 String type = resultSet.getString("type");
+                java.util.Date date = resultSet.getDate("date");
                 contactList.add(new Contact(firstName, lastName, address, city, state, zip, phoneNumber, email,
-                        type));
+                        type, date));
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -128,6 +130,46 @@ public class AddressBookDBService {
             e.printStackTrace();
         }
         return contactByCityOrStateMap;
+    }
+
+    public Contact addContact(String firstName, String lastName, String address, String city, String state, int zip,
+                              String phoneNumber, String email, String type, Date date) {
+        Connection connection = null;
+        try {
+            connection = this.getConnection();
+            connection.setAutoCommit(false);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        try {
+            assert connection != null;
+            Statement statement = connection.createStatement();
+            String sql = String.format(
+                    "insert into addressbook(firstName,lastName,address,city,state,zip,phoneNumber,email,type,date) values ('%s','%s','%s','%s','%s','%s','%s','%s','%s','%s')",
+                    firstName, lastName, address, city, state, zip, phoneNumber, email, type, date);
+            statement.executeUpdate(sql);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            try {
+                connection.rollback();
+            } catch (SQLException e1) {
+                e.printStackTrace();
+            }
+        }
+
+        try {
+            connection.commit();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                connection.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        return new Contact(firstName, lastName, address, city, state, zip, phoneNumber, email, type, date);
     }
 
     private Connection getConnection() throws SQLException {

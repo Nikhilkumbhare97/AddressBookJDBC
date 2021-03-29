@@ -1,3 +1,4 @@
+import java.util.Date;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
@@ -46,5 +47,10 @@ public class AddressBookService {
 
     public Map<String, Integer> readContactByCityOrState() {
         return addressBookDBService.getContactsByCityOrState();
+    }
+
+    public void addContactToDatabase(String firstName, String lastName, String address, String city, String state,
+                                     int zip, String phoneNumber, String email, String type, Date date) {
+        contactList.add(addressBookDBService.addContact(firstName, lastName, address, city, state, zip, phoneNumber, email, type, (java.sql.Date) date));
     }
 }

@@ -1,3 +1,4 @@
+import java.util.Date;
 import java.util.Objects;
 
 public class Contact {
@@ -10,9 +11,10 @@ public class Contact {
     public String phoneNumber;
     public String email;
     public String type;
+    public Date date;
 
     public Contact(String firstName, String lastName, String address, String city, String state, int zip,
-                   String phoneNumber, String email, String type) {
+                   String phoneNumber, String email, String type, Date date) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.address = address;
@@ -22,6 +24,7 @@ public class Contact {
         this.phoneNumber = phoneNumber;
         this.email = email;
         this.type = type;
+        this.date = date;
     }
 
     @Override
