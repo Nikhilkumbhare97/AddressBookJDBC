@@ -3,6 +3,7 @@ import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
 
 public class AddressBookTest {
     @Test
@@ -29,5 +30,14 @@ public class AddressBookTest {
         LocalDate endDate = LocalDate.now();
         List<Contact> contactList = addressBookService.readContactDataForGivenDateRange(startDate, endDate);
         Assertions.assertEquals(3, contactList.size());
+    }
+
+    @Test
+    public void givenContacts_RetrieveNumberOfContacts_ByCityOrState() {
+        AddressBookService addressBookService = new AddressBookService();
+        addressBookService.readContactData();
+        Map<String, Integer> contactByCityOrStateMap = addressBookService.readContactByCityOrState();
+        Assertions.assertEquals((int) contactByCityOrStateMap.get("Pune"), 2);
+        Assertions.assertEquals((int) contactByCityOrStateMap.get("Maharashtra"), 4);
     }
 }
