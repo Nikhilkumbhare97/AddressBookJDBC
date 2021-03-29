@@ -1,4 +1,5 @@
 import java.sql.*;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -93,6 +94,13 @@ public class AddressBookDBService {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+
+    public List<Contact> getContactForGivenDateRange(LocalDate startDate, LocalDate endDate) {
+        String sql = String.format(
+                "SELECT * from addressbook WHERE date BETWEEN '%s' AND '%s'; ",
+                Date.valueOf(startDate), Date.valueOf(endDate));
+        return this.getContactDetailsUsingSqlQuery(sql);
     }
 
     private Connection getConnection() throws SQLException {

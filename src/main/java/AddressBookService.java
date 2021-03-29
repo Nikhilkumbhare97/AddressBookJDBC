@@ -1,8 +1,9 @@
+import java.time.LocalDate;
 import java.util.List;
 
 public class AddressBookService {
-    public List<Contact> contactList;
     private final AddressBookDBService addressBookDBService;
+    public List<Contact> contactList;
 
     public AddressBookService() {
         addressBookDBService = AddressBookDBService.getInstance();
@@ -35,5 +36,10 @@ public class AddressBookService {
     public boolean checkContactInSyncWithDB(String firstName) {
         List<Contact> contactList = addressBookDBService.getContactDataByName(firstName);
         return contactList.get(0).equals(getContactData(firstName));
+    }
+
+    public List<Contact> readContactDataForGivenDateRange(LocalDate startDate, LocalDate endDate) {
+        this.contactList = addressBookDBService.getContactForGivenDateRange(startDate, endDate);
+        return contactList;
     }
 }
