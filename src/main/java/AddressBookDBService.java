@@ -4,6 +4,7 @@ import java.util.List;
 
 public class AddressBookDBService {
     private static AddressBookDBService addressBookDBService;
+    private PreparedStatement ContactDataStatement;
 
     private AddressBookDBService() {
     }
@@ -51,6 +52,47 @@ public class AddressBookDBService {
             e.printStackTrace();
         }
         return contactList;
+    }
+
+    public int updateEmployeeData(String name, String address) {
+        return this.updateContactDataUsingPreparedStatement(name, address);
+    }
+
+    private int updateContactDataUsingPreparedStatement(String firstName, String address) {
+        try (Connection connection = addressBookDBService.getConnection()) {
+            String sql = "update addressbook set address=? where firstName=?;";
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setString(1, address);
+            preparedStatement.setString(2, firstName);
+            return preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return 1;
+    }
+
+    public List<Contact> getContactDataByName(String name) {
+        List<Contact> contactList = null;
+        if (this.ContactDataStatement == null)
+            this.prepareStatementForContactData();
+        try {
+            ContactDataStatement.setString(1, name);
+            ResultSet resultSet = ContactDataStatement.executeQuery();
+            contactList = this.getAddressBookData(resultSet);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return contactList;
+    }
+
+    private void prepareStatementForContactData() {
+        try {
+            Connection connection = addressBookDBService.getConnection();
+            String sql = "SELECT * from addressbook WHERE firstName=?; ";
+            ContactDataStatement = connection.prepareStatement(sql);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     private Connection getConnection() throws SQLException {
