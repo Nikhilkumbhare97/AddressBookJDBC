@@ -1,4 +1,3 @@
-
 import java.sql.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -118,13 +117,13 @@ public class AddressBookDBService {
             while (resultSet.next()) {
                 String city = resultSet.getString("city");
                 Integer count = resultSet.getInt("count");
-                contactByCityOrStateMap.put(city,count);
+                contactByCityOrStateMap.put(city, count);
             }
             resultSet = statement.executeQuery(sqlState);
             while (resultSet.next()) {
                 String state = resultSet.getString("state");
                 Integer count = resultSet.getInt("count");
-                contactByCityOrStateMap.put(state,count);
+                contactByCityOrStateMap.put(state, count);
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -154,7 +153,7 @@ public class AddressBookDBService {
             try {
                 connection.rollback();
             } catch (SQLException e1) {
-                e.printStackTrace();
+                e1.printStackTrace();
             }
         }
 
