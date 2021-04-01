@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Map;
 
 public class AddressBookTest {
+
     @Test
     public void contactsWhenRetrievedFromDB_ShouldMatchCount() {
         AddressBookService addressBookService = new AddressBookService();
@@ -57,7 +58,7 @@ public class AddressBookTest {
 
     @Test
     public void givenContacts_WhenAddedToDB_ShouldMatchEmployeeEntries() {
-        Contact[] arrayOfEmployee = {
+        Contact[] arrayOfContact = {
                 new Contact("Rajesh", "Dharmik", "ModiNo6", "Nagpur", "Maharashtra", 440016, "9865430031",
                         "rajeshd@gmail.com", "Profession", Date.valueOf("2021-03-25")),
                 new Contact("Shreya", "Ghosh", "PimpleGurav", "Pune", "Maharashtra", 411055, "9865854331",
@@ -65,13 +66,13 @@ public class AddressBookTest {
         AddressBookService addressBookService = new AddressBookService();
         addressBookService.readData(AddressBookService.IOService.DB_IO);
         Instant start = Instant.now();
-        addressBookService.addContact(Arrays.asList(arrayOfEmployee));
+        addressBookService.addDetails(Arrays.asList(arrayOfContact));
         Instant end = Instant.now();
         System.out.println("Duration without thread : " + Duration.between(start, end));
         Instant threadStart = Instant.now();
-        addressBookService.addEmployeeToPayrollWithThreads(Arrays.asList(arrayOfEmployee));
+        addressBookService.addDetailsWithThreads(Arrays.asList(arrayOfContact));
         Instant threadEnd = Instant.now();
-        System.out.println("Duartion with Thread : " + Duration.between(threadStart, threadEnd));
+        System.out.println("Duration with Thread : " + Duration.between(threadStart, threadEnd));
         Assertions.assertEquals(7, addressBookService.countEntries());
     }
 }

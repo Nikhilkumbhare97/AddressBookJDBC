@@ -8,6 +8,10 @@ public class AddressBookService {
     private final AddressBookDBService addressBookDBService;
     public List<Contact> contactList;
 
+    public enum IOService {
+        DB_IO
+    }
+
     public AddressBookService() {
         addressBookDBService = AddressBookDBService.getInstance();
     }
@@ -64,7 +68,7 @@ public class AddressBookService {
         contactList.add(addressBookDBService.addContact(firstName, lastName, address, city, state, zip, phoneNumber, email, type, (java.sql.Date) date));
     }
 
-    public void addContact(List<Contact> contactDataList) {
+    public void addDetails(List<Contact> contactDataList) {
         contactDataList.forEach(contactData -> {
             System.out.println("Employee being added : " + contactData.firstName);
             this.addContactToDatabase(contactData.firstName, contactData.lastName, contactData.address, contactData.city,
@@ -75,22 +79,22 @@ public class AddressBookService {
         System.out.println("" + this.contactList);
     }
 
-    public void addEmployeeToPayrollWithThreads(List<Contact> contactDataList) {
-        Map<Integer, Boolean> employeeAdditionStatus = new HashMap<>();
+    public void addDetailsWithThreads(List<Contact> contactDataList) {
+        Map<Integer, Boolean> conatactAdditionStatus = new HashMap<>();
         contactDataList.forEach(contactData -> {
             Runnable task = () -> {
-                employeeAdditionStatus.put(contactData.hashCode(), false);
+                conatactAdditionStatus.put(contactData.hashCode(), false);
                 System.out.println("Employee being added : " + Thread.currentThread().getName());
                 this.addContactToDatabase(contactData.firstName, contactData.lastName, contactData.address, contactData.city,
                         contactData.state, contactData.zip, contactData.phoneNumber, contactData.email,
                         contactData.type, contactData.date);
-                employeeAdditionStatus.put(contactData.hashCode(), true);
+                conatactAdditionStatus.put(contactData.hashCode(), true);
                 System.out.println("Employee added : " + Thread.currentThread().getName());
             };
             Thread thread = new Thread(task, contactData.firstName);
             thread.start();
         });
-        while (employeeAdditionStatus.containsValue(false)) {
+        while (conatactAdditionStatus.containsValue(false)) {
             try {
                 Thread.sleep(10);
             } catch (InterruptedException e) {
@@ -98,9 +102,5 @@ public class AddressBookService {
             }
         }
         System.out.println("" + this.contactList);
-    }
-
-    public enum IOService {
-        DB_IO
     }
 }
