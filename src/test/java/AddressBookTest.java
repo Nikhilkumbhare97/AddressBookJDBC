@@ -1,4 +1,8 @@
+import io.restassured.RestAssured;
+import io.restassured.response.Response;
+import io.restassured.specification.RequestSpecification;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.sql.Date;
@@ -75,4 +79,53 @@ public class AddressBookTest {
         System.out.println("Duration with Thread : " + Duration.between(threadStart, threadEnd));
         Assertions.assertEquals(7, addressBookService.countEntries());
     }
+
+//    @BeforeEach
+//    public void setUp() {
+//        RestAssured.baseURI = "http://localhost";
+//        RestAssured.port = 3000;
+//    }
+//
+//    public Contact[] getContactList() {
+//        Response response = RestAssured.get("/contacts");
+//        System.out.println("Contact entries in JSON Server :\n" + response.asString());
+//        Contact[] arrayOfContacts = new Gson().fromJson(response.asString(), Contact[].class);
+//        return arrayOfContacts;
+//    }
+//
+//    public Response addContactToJsonServer(Contact contactData) {
+//        String contactJson = new Gson().toJson(contactData);
+//        RequestSpecification request = RestAssured.given();
+//        request.header("Content-Type", "application/json");
+//        request.body(contactJson);
+//        return request.post("/contacts");
+//    }
+//
+//    @Test
+//    public void givenEmployeeDataInJsonServer_WhenRetrived_ShouldMatchCount() {
+//        Contact[] arrayOfContacts = getContactList();
+//        AddressBookService addressBookService;
+//        addressBookService = new AddressBookService(Arrays.asList(arrayOfContacts));
+//        long entries = addressBookService.countEntries(AddressBookService.IOService.REST_IO);
+//        Assertions.assertEquals(4, entries);
+//    }
+//
+//    @Test
+//    public void givenNewContact_WhenAdded__ShouldMatch() {
+//        AddressBookService addressBookService;
+//        Contact[] arrayOfContacts = getContactList();
+//        addressBookService = new AddressBookService(Arrays.asList(arrayOfContacts));
+//        Contact contactData = null;
+//        contactData = new Contact("Shivam", "Sarkar", "Station Road", "Bano", "Jharkhand", 835102, "9908487489",
+//                "shivamgolu@gmail.com", "friend",Date.valueOf("2021-03-25"));
+//        Response response = addContactToJsonServer(contactData);
+//        int statusCode = response.getStatusCode();
+//        Assertions.assertEquals(201, statusCode);
+//        contactData = new Gson().fromJson(response.asString(), Contact.class);
+//        addressBookService.addContactToJSONServer(contactData, AddressBookService.IOService.REST_IO);
+//        long entries = addressBookService.countEntries(AddressBookService.IOService.REST_IO);
+//        Assertions.assertEquals(4, entries);
+//    }
+
 }
+
