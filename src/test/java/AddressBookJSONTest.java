@@ -43,4 +43,13 @@ public class AddressBookJSONTest {
                 .body("address", Matchers.is("Mahal"));
         Assertions.assertEquals(200, response.getStatusCode());
     }
+
+    @Test
+    public void testToDeleteContactDataInJSONServer(){
+        Response response = RestAssured.given()
+                .contentType(ContentType.JSON)
+                .accept(ContentType.JSON)
+                .when().delete("http://localhost:4000/addressbook/delete/4");
+        Assertions.assertEquals(200, response.getStatusCode());
+    }
 }
