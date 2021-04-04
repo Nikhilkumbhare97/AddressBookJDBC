@@ -21,7 +21,7 @@ public class AddressBookJSONTest {
     }
 
     @Test
-    public void testToContactDataInJSONServer(){
+    public void testToAddContactDataInJSONServer(){
         Response response = RestAssured.given()
                 .contentType(ContentType.JSON)
                 .accept(ContentType.JSON)
@@ -30,5 +30,17 @@ public class AddressBookJSONTest {
         response.then()
                 .body("firstName", Matchers.is("Anisha"));
         Assertions.assertEquals(201, response.getStatusCode());
+    }
+
+    @Test
+    public void testToUpdateContactDataInJSONServer(){
+        Response response = RestAssured.given()
+                .contentType(ContentType.JSON)
+                .accept(ContentType.JSON)
+                .body("{\"firstName\": \"Anisha\",\"lastName\": \"Meshram\",\"address\": \"Mahal\",\"city\": \"Nagpur\",\"state\": \"Maharashtra\",\"zip\": \"440025\",\"phoneNumber\": \"8877445588\",\"email\": \"anisha@gmail.com\",\"personType\": \"Friend\"}")
+                .when().put("http://localhost:4000/addressbook/4");
+        response.then()
+                .body("address", Matchers.is("Mahal"));
+        Assertions.assertEquals(200, response.getStatusCode());
     }
 }
